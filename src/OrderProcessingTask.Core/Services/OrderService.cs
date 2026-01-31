@@ -27,12 +27,13 @@ public class OrderService : IOrderService
         {
             var exception = new ArgumentException("Id must be positive", nameof(orderId));
             _logger.LogError($"Order id: {orderId} is invalid.", exception);
+            return;
         }
 
         try
         {
             await _repository.GetOrderAsync(orderId);
-            _logger.LogInfo($"Order {orderId} processed successfully.");
+            _logger.LogInfo($"Order id: {orderId} processed successfully.");
         }
         catch (KeyNotFoundException ex)
         {

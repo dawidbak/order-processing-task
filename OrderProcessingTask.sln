@@ -4,6 +4,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderProcessingTask", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderProcessingTask.Core", "src\OrderProcessingTask.Core\OrderProcessingTask.Core.csproj", "{D2E8C80A-CBE9-42E1-A9BD-75D4FE0EEF10}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4B5BF480-D4C0-4BDC-B782-5A77549A64DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{93CD369E-CE86-4872-AF1B-936EAF97C4B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderProcessingTask.Core.UnitTests", "tests\OrderProcessingTask.Core.UnitTests\OrderProcessingTask.Core.UnitTests.csproj", "{2269427E-96E5-4C4B-AC5E-97E4CAF6163B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +24,14 @@ Global
 		{D2E8C80A-CBE9-42E1-A9BD-75D4FE0EEF10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2E8C80A-CBE9-42E1-A9BD-75D4FE0EEF10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2E8C80A-CBE9-42E1-A9BD-75D4FE0EEF10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2269427E-96E5-4C4B-AC5E-97E4CAF6163B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2269427E-96E5-4C4B-AC5E-97E4CAF6163B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2269427E-96E5-4C4B-AC5E-97E4CAF6163B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2269427E-96E5-4C4B-AC5E-97E4CAF6163B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{183E6CB5-CF4F-4510-9F5F-ABFA18E34AC9} = {4B5BF480-D4C0-4BDC-B782-5A77549A64DD}
+		{D2E8C80A-CBE9-42E1-A9BD-75D4FE0EEF10} = {4B5BF480-D4C0-4BDC-B782-5A77549A64DD}
+		{2269427E-96E5-4C4B-AC5E-97E4CAF6163B} = {93CD369E-CE86-4872-AF1B-936EAF97C4B0}
 	EndGlobalSection
 EndGlobal
