@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OrderProcessingTask.Core.Common.Options;
 using OrderProcessingTask.Core.Infrastructure.Logging;
 using OrderProcessingTask.Core.Infrastructure.Notification;
 using OrderProcessingTask.Core.Infrastructure.Persistence;

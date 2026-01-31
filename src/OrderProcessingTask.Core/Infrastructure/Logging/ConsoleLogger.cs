@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using OrderProcessingTask.Core.Common.Options;
 
 namespace OrderProcessingTask.Core.Infrastructure.Logging;
 
