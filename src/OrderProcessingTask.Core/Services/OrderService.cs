@@ -70,7 +70,7 @@ public class OrderService : IOrderService
     private bool IsValidOrderId(int orderId)
     {
         if (_orderValidator.IsValid(orderId)) return true;
-        var exception = new ArgumentException("Id must be positive", nameof(orderId));
+        var exception = new ArgumentException("Id must be positive and greater than 0", nameof(orderId));
         _logger.LogError($"Order id: {orderId} is invalid.", exception);
         return false;
     }

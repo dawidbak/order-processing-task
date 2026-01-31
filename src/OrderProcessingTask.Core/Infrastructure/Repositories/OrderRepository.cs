@@ -16,7 +16,7 @@ public class OrderRepository : IOrderRepository
     public async Task<string> GetOrderAsync(int orderId)
     {
         if (!_store.Orders.TryGetValue(orderId, out var order))
-            throw new KeyNotFoundException($"Order with id {orderId} not found!");
+            throw new KeyNotFoundException();
         
         await Task.Delay(100);
         return order.Description;
