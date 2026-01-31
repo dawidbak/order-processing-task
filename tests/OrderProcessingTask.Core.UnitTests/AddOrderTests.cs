@@ -2,6 +2,7 @@
 using OrderProcessingTask.Core.Domain;
 using OrderProcessingTask.Core.Domain.Exceptions;
 using OrderProcessingTask.Core.Infrastructure.Logging;
+using OrderProcessingTask.Core.Infrastructure.Notification;
 using OrderProcessingTask.Core.Infrastructure.Persistence;
 using OrderProcessingTask.Core.Infrastructure.Repositories;
 using OrderProcessingTask.Core.Services;
@@ -14,6 +15,7 @@ public class AddOrderTests
     private readonly Mock<IOrderRepository> _mockOrderRepository;
     private readonly Mock<IOrderValidator> _mockOrderValidator;
     private readonly Mock<ILogger> _mockILogger;
+    private readonly Mock<INotificationService> _mockNotificationService;
     private readonly OrderService _sut;
 
     public AddOrderTests()
@@ -21,7 +23,9 @@ public class AddOrderTests
         _mockOrderRepository = new Mock<IOrderRepository>();
         _mockOrderValidator = new Mock<IOrderValidator>();
         _mockILogger = new Mock<ILogger>();
-        _sut = new OrderService(_mockOrderValidator.Object, _mockILogger.Object, _mockOrderRepository.Object);
+        _mockNotificationService = new Mock<INotificationService>();
+        _sut = new OrderService(_mockOrderValidator.Object, _mockILogger.Object, _mockOrderRepository.Object,
+            _mockNotificationService.Object);
     }
 
     [Fact]
@@ -41,6 +45,7 @@ public class AddOrderTests
         _mockILogger.Verify(
             l => l.LogInfo(It.Is<string>(s => s.Contains($"Order with id {newOrder.Id} added successfully."))),
             Times.Once);
+        _mockNotificationService.Verify(n => n.Send(It.IsAny<string>()), Times.Once);
     }
 
     [Fact]
@@ -63,6 +68,7 @@ public class AddOrderTests
                 It.Is<string>(s => s.Contains($"Failed to add new order with id {duplicateOrder.Id}")),
                 exception),
             Times.Once);
+        _mockNotificationService.Verify(n => n.Send(It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -76,7 +82,8 @@ public class AddOrderTests
         // Using real in-memory store to simulate concurrency
         var store = new InMemoryOrderStore();
         var repo = new OrderRepository(store);
-        var service = new OrderService(_mockOrderValidator.Object, _mockILogger.Object, repo);
+        var service = new OrderService(_mockOrderValidator.Object, _mockILogger.Object, repo,
+            _mockNotificationService.Object);
 
         _mockOrderValidator.Setup(v => v.IsValid(order.Id)).Returns(true);
 
@@ -106,5 +113,6 @@ public class AddOrderTests
             l => l.LogError(It.Is<string>(s => s.Contains("already exists") || s.Contains("Failed to add")),
                 It.IsAny<OrderAlreadyExistsException>()),
             Times.Exactly(9));
+        _mockNotificationService.Verify(n => n.Send(It.IsAny<string>()), Times.Once);
     }
 }

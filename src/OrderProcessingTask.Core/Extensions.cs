@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrderProcessingTask.Core.Infrastructure.Logging;
+using OrderProcessingTask.Core.Infrastructure.Notification;
 using OrderProcessingTask.Core.Infrastructure.Persistence;
 using OrderProcessingTask.Core.Infrastructure.Repositories;
 using OrderProcessingTask.Core.Services;
@@ -24,6 +25,7 @@ public static class Extensions
             services.Configure<LoggingOptions>(configuration.GetSection("Logging"));
             services.AddSingleton<ILogger, ConsoleLogger>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<INotificationService, NotificationService>();
         }
 
         private void MapApplication()

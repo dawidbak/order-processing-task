@@ -1,5 +1,6 @@
 ﻿using Moq;
 using OrderProcessingTask.Core.Infrastructure.Logging;
+using OrderProcessingTask.Core.Infrastructure.Notification;
 using OrderProcessingTask.Core.Infrastructure.Repositories;
 using OrderProcessingTask.Core.Services;
 using OrderProcessingTask.Core.Services.Validators;
@@ -11,6 +12,7 @@ public class ProcessOrderTests
     private readonly Mock<IOrderRepository> _mockOrderRepository;
     private readonly Mock<IOrderValidator> _mockOrderValidator;
     private readonly Mock<ILogger> _mockILogger;
+    private readonly Mock<INotificationService> _mockNotificationService;
     private readonly OrderService _sut;
 
     public ProcessOrderTests()
@@ -18,7 +20,9 @@ public class ProcessOrderTests
         _mockOrderRepository = new Mock<IOrderRepository>();
         _mockOrderValidator = new Mock<IOrderValidator>();
         _mockILogger = new Mock<ILogger>();
-        _sut = new OrderService(_mockOrderValidator.Object, _mockILogger.Object, _mockOrderRepository.Object);
+        _mockNotificationService = new Mock<INotificationService>();
+        _sut = new OrderService(_mockOrderValidator.Object, _mockILogger.Object, _mockOrderRepository.Object,
+            _mockNotificationService.Object);
     }
 
     [Fact]
@@ -36,6 +40,7 @@ public class ProcessOrderTests
         _mockOrderRepository.Verify(r => r.GetOrderAsync(orderId), Times.Once);
         _mockILogger.Verify(
             l => l.LogInfo(It.Is<string>(s => s.Contains($"Order id: {orderId} processed successfully."))), Times.Once);
+        _mockNotificationService.Verify(n => n.Send(It.IsAny<string>()), Times.Once);
     }
 
     [Fact]
@@ -53,6 +58,7 @@ public class ProcessOrderTests
         _mockILogger.Verify(
             l => l.LogError(It.Is<string>(s => s.Contains($"Order id: {orderId} is invalid.")),
                 It.IsAny<ArgumentException>()), Times.Once);
+        _mockNotificationService.Verify(n => n.Send(It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -70,6 +76,7 @@ public class ProcessOrderTests
         _mockILogger.Verify(
             l => l.LogError(It.Is<string>(s => s.Contains($"Order id: {orderId} not found.")),
                 It.IsAny<KeyNotFoundException>()), Times.Once);
+        _mockNotificationService.Verify(n => n.Send(It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -80,7 +87,7 @@ public class ProcessOrderTests
         _mockOrderRepository.Setup(r => r.GetOrderAsync(It.IsAny<int>()))
             .Returns(async () =>
             {
-                await Task.Delay(50);
+                await Task.Delay(100);
                 return "Item";
             });
 

@@ -1,6 +1,7 @@
 ﻿using OrderProcessingTask.Core.Domain;
 using OrderProcessingTask.Core.Domain.Exceptions;
 using OrderProcessingTask.Core.Infrastructure.Logging;
+using OrderProcessingTask.Core.Infrastructure.Notification;
 using OrderProcessingTask.Core.Infrastructure.Repositories;
 using OrderProcessingTask.Core.Services.Validators;
 
@@ -11,12 +12,15 @@ public class OrderService : IOrderService
     private readonly IOrderValidator _orderValidator;
     private readonly ILogger _logger;
     private readonly IOrderRepository _repository;
+    private readonly INotificationService _notificationService;
 
-    public OrderService(IOrderValidator orderValidator, ILogger logger, IOrderRepository repository)
+    public OrderService(IOrderValidator orderValidator, ILogger logger, IOrderRepository repository,
+        INotificationService notificationService)
     {
         _orderValidator = orderValidator;
         _logger = logger;
         _repository = repository;
+        _notificationService = notificationService;
     }
 
     public async Task ProcessOrderAsync(int orderId)
@@ -28,8 +32,9 @@ public class OrderService : IOrderService
 
         try
         {
-            await _repository.GetOrderAsync(orderId);
+            var description = await _repository.GetOrderAsync(orderId);
             _logger.LogInfo($"Order id: {orderId} processed successfully.");
+            _notificationService.Send($"Order - id: {orderId}, description: {description} has been processed.");
         }
         catch (KeyNotFoundException ex)
         {
@@ -53,6 +58,7 @@ public class OrderService : IOrderService
             await _repository.AddOrderAsync(order);
 
             _logger.LogInfo($"Order with id {order.Id} added successfully.");
+            _notificationService.Send($"New order added - id: {order.Id}, description: {order.Description}");
         }
         catch (OrderAlreadyExistsException ex)
         {
