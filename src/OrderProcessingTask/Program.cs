@@ -1,11 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using OrderProcessingTask.Core;
 using OrderProcessingTask.Core.Domain;
 using OrderProcessingTask.Core.Services;
 
 // Initialize DI container
 var services = new ServiceCollection();
-services.MapCore();
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .Build();
+
+services.MapCore(configuration);
 var serviceProvider = services.BuildServiceProvider();
 
 Console.WriteLine("Order Processing System");

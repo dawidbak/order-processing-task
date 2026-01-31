@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using OrderProcessingTask.Core.Infrastructure.Logging;
 using OrderProcessingTask.Core.Infrastructure.Persistence;
 using OrderProcessingTask.Core.Infrastructure.Repositories;
@@ -9,22 +10,26 @@ namespace OrderProcessingTask.Core;
 
 public static class Extensions
 {
-    public static void MapCore(this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services.MapApplication();
-        services.MapInfrastructure();
-    }
-    
-    private static void MapInfrastructure(this IServiceCollection services)
-    {
-        services.AddSingleton<InMemoryOrderStore>();
-        services.AddSingleton<ILogger, ConsoleLogger>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
-    }
-    
-    private static void MapApplication(this IServiceCollection services)
-    {
-        services.AddSingleton<IOrderValidator, OrderValidator>();
-        services.AddScoped<IOrderService, OrderService>();
+        public void MapCore(IConfiguration configuration)
+        {
+            services.MapApplication();
+            services.MapInfrastructure(configuration);
+        }
+
+        private void MapInfrastructure(IConfiguration configuration)
+        {
+            services.AddSingleton<InMemoryOrderStore>();
+            services.Configure<LoggingOptions>(configuration.GetSection("Logging"));
+            services.AddSingleton<ILogger, ConsoleLogger>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+        }
+
+        private void MapApplication()
+        {
+            services.AddSingleton<IOrderValidator, OrderValidator>();
+            services.AddScoped<IOrderService, OrderService>();
+        }
     }
 }

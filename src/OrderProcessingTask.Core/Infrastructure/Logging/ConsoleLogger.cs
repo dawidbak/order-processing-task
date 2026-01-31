@@ -1,9 +1,19 @@
-﻿namespace OrderProcessingTask.Core.Infrastructure.Logging;
+﻿using Microsoft.Extensions.Options;
+
+namespace OrderProcessingTask.Core.Infrastructure.Logging;
 
 public class ConsoleLogger : ILogger
 {
+    private readonly LoggingOptions _options;
+
+    public ConsoleLogger(IOptions<LoggingOptions> options)
+    {
+        _options = options.Value;
+    }
+
     public void LogInfo(string message)
     {
+        if (_options.LogLevel != LogLevel.Info) return;
         WriteLog("INFO", message);
     }
 
@@ -11,8 +21,8 @@ public class ConsoleLogger : ILogger
     {
         WriteLog("ERROR", $"{message} - Exception: {ex.Message}\n{ex.StackTrace}");
     }
-    
-    
+
+
     private static void WriteLog(string level, string message)
     {
         var timestamp = TimeProvider.System.GetUtcNow().DateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
