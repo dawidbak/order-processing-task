@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderProcessingTask", "src\OrderProcessingTask\OrderProcessingTask.csproj", "{183E6CB5-CF4F-4510-9F5F-ABFA18E34AC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderProcessingTask.Core", "src\OrderProcessingTask.Core\OrderProcessingTask.Core.csproj", "{D2E8C80A-CBE9-42E1-A9BD-75D4FE0EEF10}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{183E6CB5-CF4F-4510-9F5F-ABFA18E34AC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{183E6CB5-CF4F-4510-9F5F-ABFA18E34AC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{183E6CB5-CF4F-4510-9F5F-ABFA18E34AC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{183E6CB5-CF4F-4510-9F5F-ABFA18E34AC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2E8C80A-CBE9-42E1-A9BD-75D4FE0EEF10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2E8C80A-CBE9-42E1-A9BD-75D4FE0EEF10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2E8C80A-CBE9-42E1-A9BD-75D4FE0EEF10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2E8C80A-CBE9-42E1-A9BD-75D4FE0EEF10}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
