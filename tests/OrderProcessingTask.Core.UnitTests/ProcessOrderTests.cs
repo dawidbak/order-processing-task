@@ -59,7 +59,7 @@ public class ProcessOrderTests
     public async Task ProcessOrderAsync_ShouldLogError_WhenOrderDoesNotExist()
     {
         // Arrange
-        var orderId = 99;
+        var orderId = 1;
         _mockOrderValidator.Setup(v => v.IsValid(orderId)).Returns(true);
         _mockOrderRepository.Setup(r => r.GetOrderAsync(orderId)).ThrowsAsync(new KeyNotFoundException());
 

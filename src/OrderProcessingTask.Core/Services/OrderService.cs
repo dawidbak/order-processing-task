@@ -23,12 +23,8 @@ public class OrderService : IOrderService
     {
         _logger.LogInfo($"Starting processing for order id: {orderId}.");
 
-        if (!_orderValidator.IsValid(orderId))
-        {
-            var exception = new ArgumentException("Id must be positive", nameof(orderId));
-            _logger.LogError($"Order id: {orderId} is invalid.", exception);
+        if (!IsValidOrderId(orderId))
             return;
-        }
 
         try
         {
@@ -49,12 +45,27 @@ public class OrderService : IOrderService
     {
         try
         {
+            _logger.LogInfo($"Adding new order with id {order.Id}.");
+
+            if (!IsValidOrderId(order.Id))
+                return;
+
             await _repository.AddOrderAsync(order);
+
+            _logger.LogInfo($"Order with id {order.Id} added successfully.");
         }
         catch (OrderAlreadyExistsException ex)
         {
             _logger.LogError($"Failed to add new order with id {order.Id}", ex);
             throw;
         }
+    }
+
+    private bool IsValidOrderId(int orderId)
+    {
+        if (_orderValidator.IsValid(orderId)) return true;
+        var exception = new ArgumentException("Id must be positive", nameof(orderId));
+        _logger.LogError($"Order id: {orderId} is invalid.", exception);
+        return false;
     }
 }
